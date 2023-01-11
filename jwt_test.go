@@ -1,58 +1,38 @@
 package jwt
 
 import (
+	"fmt"
 	"reflect"
+	"strings"
 	"testing"
 	"time"
 
 	jwtgo "github.com/dgrijalva/jwt-go"
 )
 
-// func TestNew(t *testing.T) {
-// 	for _, tc := range []struct {
-// 		name  string
-// 		input int64
-// 		role  string
-// 	}{
-// 		{
-// 			name:  "should has 3 components: header, payload, signature",
-// 			input: 1,
-// 			role:  "admin",
-// 		},
-// 	} {
-// 		t.Run(fmt.Sprintf("[case] %s", tc.name), func(t *testing.T) {
-// 			token, _ := New("secret").Create(tc.input, tc.role)
-// 			got := len(strings.Split(string(token), "."))
-// 			if got != 3 {
-// 				t.Errorf("got %v; want 3", got)
-// 			}
-// 		})
-// 	}
-// }
-
-// func TestJWT_Create(t *testing.T) {
-// 	type payload struct {
-// 		id   int
-// 		role string
-// 	}
-// 	for _, tc := range []struct {
-// 		name string
-// 		data *payload
-// 	}{
-// 		{
-// 			name: "should has 3 components: header, payload, signature",
-// 			data: &payload{id: 1, role: "admin"},
-// 		},
-// 	} {
-// 		t.Run(fmt.Sprintf("[case] %s", tc.name), func(t *testing.T) {
-// 			token, _ := New("secret").Create(tc.data)
-// 			got := len(strings.Split(string(token), "."))
-// 			if got != 3 {
-// 				t.Errorf("got %v; want 3", got)
-// 			}
-// 		})
-// 	}
-// }
+func TestJWT_Create(t *testing.T) {
+	type payload struct {
+		id   int
+		role string
+	}
+	for _, tc := range []struct {
+		name string
+		data *payload
+	}{
+		{
+			name: "should has 3 components: header, payload, signature",
+			data: &payload{id: 1, role: "admin"},
+		},
+	} {
+		t.Run(fmt.Sprintf("[case] %s", tc.name), func(t *testing.T) {
+			token, _ := New("secret").Create(tc.data)
+			got := len(strings.Split(string(token), "."))
+			if got != 3 {
+				t.Errorf("got %v; want 3", got)
+			}
+		})
+	}
+}
 
 func TestJWT_Validate(t *testing.T) {
 	type payload struct {
@@ -75,7 +55,7 @@ func TestJWT_Validate(t *testing.T) {
 				data: &payload{ID: 1, Role: "admin"},
 				create: func(data interface{}) (string, error) {
 					token := jwtgo.New(jwtgo.GetSigningMethod("HS256"))
-					token.Claims = &customClaimsGenericData{data, jwtgo.StandardClaims{}}
+					token.Claims = &customClaim{data, jwtgo.StandardClaims{}}
 					return token.SignedString([]byte("fake_secret"))
 				},
 			},
@@ -87,7 +67,7 @@ func TestJWT_Validate(t *testing.T) {
 				data: &payload{ID: 10, Role: "admin"},
 				create: func(data interface{}) (string, error) {
 					token := jwtgo.New(jwtgo.GetSigningMethod("HS256"))
-					token.Claims = &customClaimsGenericData{data, jwtgo.StandardClaims{}}
+					token.Claims = &customClaim{data, jwtgo.StandardClaims{}}
 					return token.SignedString([]byte("secret"))
 				},
 			},
