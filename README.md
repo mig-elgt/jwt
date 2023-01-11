@@ -56,7 +56,7 @@ func main() {
 	// Output
 	// 100
 
-	// Create a Token with a custom Data Structure and Expires Time (in hours)
+	// Create a Token with a custom Data Structure and an expiration time (in hours)
 	t = jwt.NewWithExpiresAt("secret_key", 10)
 	type payload struct {
 		UserID int64 `json:"user_id"`
