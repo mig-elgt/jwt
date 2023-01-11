@@ -1,12 +1,12 @@
 # Go JWT Library
 
-JWT Library defines and implements an interface to create and validate JWT tokens.
+JWT Library defines and implements an interface to create and validate JWT.
 
 ## Features
 
-* Exports an interface to create and valiate tokens. You can use this interface in your code in order to do dependency injection.
+* Exports an interface to create and validate tokens. You can use this interface in your code to implement dependency injection.
 
-* Create tokens with an expires time.
+* Create tokens with an expiration time.
 
 * Support Generic Data for the token's payload.
 
